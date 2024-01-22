@@ -114,6 +114,9 @@ do
 			cat <<-C >&3
 
 			#if !LIBCOMPAT_IS_23
+			#	ifdef static_assert
+			#		undef static_assert
+			#	endif
 			#	define static_assert(e, ...) _Static_assert(e, ""__VA_ARGS__)
 			#endif
 			C
@@ -121,7 +124,7 @@ do
 		thread_local)
 			cat <<-C >&3
 
-			#if !LIBCOMPAT_IS_23
+			#if !LIBCOMPAT_IS_23 && !defined(thread_local)
 			#	define thread_local _Thread_local
 			#endif
 			C
